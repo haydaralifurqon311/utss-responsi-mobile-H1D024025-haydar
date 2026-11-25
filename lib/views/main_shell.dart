@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'home_screen.dart';
+
 class MainShell extends StatefulWidget {
   const MainShell({super.key});
 
@@ -55,15 +57,6 @@ class _MainShellState extends State<MainShell> {
         ),
       ),
     );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(child: Text('Layar cuaca'));
   }
 }
 
