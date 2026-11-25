@@ -10,16 +10,20 @@ import 'viewmodels/settings_viewmodel.dart';
 import 'viewmodels/weather_viewmodel.dart';
 import 'views/main_shell.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   final storageService = StorageService();
   final weatherService = WeatherService();
   final geocodingService = GeocodingService();
+  final settingsViewModel = SettingsViewModel(storageService);
+  await settingsViewModel.load();
 
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (_) => SettingsViewModel(storageService)..load(),
+        ChangeNotifierProvider<SettingsViewModel>.value(
+          value: settingsViewModel,
         ),
         ChangeNotifierProvider(
           create: (_) =>

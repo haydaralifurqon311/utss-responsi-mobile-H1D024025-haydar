@@ -159,39 +159,48 @@ class _LocationScreenState extends State<LocationScreen> {
   }
 
   Widget _buildSearchField(LocationViewModel viewModel) {
-    return Row(
-      children: [
-        Expanded(
-          child: TextField(
-            controller: _searchController,
-            textInputAction: TextInputAction.search,
-            onChanged: (_) => setState(() {}),
-            onSubmitted: (_) => _searchCity(),
-            decoration: InputDecoration(
-              hintText: 'Cari kota, misal: Bandung, Denpasar.',
-              prefixIcon: const Icon(Icons.search),
-              suffixIcon: _searchController.text.isEmpty
-                  ? null
-                  : IconButton(
-                      tooltip: 'Hapus pencarian',
-                      onPressed: () {
-                        _searchController.clear();
-                        setState(() {});
-                      },
-                      icon: const Icon(Icons.close),
-                    ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
+    final searchInput = TextField(
+      controller: _searchController,
+      textInputAction: TextInputAction.search,
+      onChanged: (_) => setState(() {}),
+      onSubmitted: (_) => _searchCity(),
+      decoration: InputDecoration(
+        hintText: 'Cari kota, misal: Bandung, Denpasar.',
+        prefixIcon: const Icon(Icons.search),
+        suffixIcon: _searchController.text.isEmpty
+            ? null
+            : IconButton(
+                tooltip: 'Hapus pencarian',
+                onPressed: () {
+                  _searchController.clear();
+                  setState(() {});
+                },
+                icon: const Icon(Icons.close),
               ),
-            ),
-          ),
-        ),
-        const SizedBox(width: 8),
-        FilledButton(
-          onPressed: viewModel.state == ViewState.loading ? null : _searchCity,
-          child: const Text('Cari'),
-        ),
-      ],
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+      ),
+    );
+    final searchButton = FilledButton(
+      onPressed: viewModel.state == ViewState.loading ? null : _searchCity,
+      child: const Text('Cari'),
+    );
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth < 380) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [searchInput, const SizedBox(height: 8), searchButton],
+          );
+        }
+        return Row(
+          children: [
+            Expanded(child: searchInput),
+            const SizedBox(width: 8),
+            searchButton,
+          ],
+        );
+      },
     );
   }
 

@@ -35,6 +35,7 @@ class WeatherHeader extends StatelessWidget {
       runSpacing: 8,
       children: [
         PopupMenuButton<LocationModel>(
+          tooltip: 'Pilih lokasi',
           onSelected: weatherViewModel.selectLocation,
           itemBuilder: (context) => [
             PopupMenuItem<LocationModel>(
@@ -104,13 +105,16 @@ class WeatherHeader extends StatelessWidget {
                     : Icons.dark_mode_outlined,
               ),
             ),
-            TextButton(
-              onPressed: settingsViewModel.toggleUnit,
-              style: TextButton.styleFrom(
-                minimumSize: const Size(48, 40),
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+            Tooltip(
+              message: 'Ubah satuan suhu',
+              child: TextButton(
+                onPressed: settingsViewModel.toggleUnit,
+                style: TextButton.styleFrom(
+                  minimumSize: const Size(48, 40),
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                ),
+                child: Text(settingsViewModel.isCelsius ? '°C' : '°F'),
               ),
-              child: Text(settingsViewModel.isCelsius ? '°C' : '°F'),
             ),
             IconButton(
               tooltip: isFavorite ? 'Hapus dari favorit' : 'Tambah ke favorit',
