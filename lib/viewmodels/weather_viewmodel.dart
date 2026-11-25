@@ -12,6 +12,7 @@ class WeatherViewModel extends ChangeNotifier {
 
   final WeatherService _weatherService;
   final StorageService _storageService;
+  final Map<String, Future<WeatherModel>> _locationWeatherCache = {};
 
   LocationModel? _selectedLocation;
   WeatherModel? _weather;
@@ -24,6 +25,33 @@ class WeatherViewModel extends ChangeNotifier {
   AirQualityModel? get airQuality => _airQuality;
   ViewState get state => _state;
   String? get errorMessage => _errorMessage;
+
+  Future<WeatherModel> fetchWeatherForLocation(LocationModel location) {
+    final key = '${location.latitude},${location.longitude}';
+    final cachedWeather = _locationWeatherCache[key];
+    if (cachedWeather != null) {
+      return cachedWeather;
+    }
+
+    final request = _fetchWeatherForLocation(location, key);
+    _locationWeatherCache[key] = request;
+    return request;
+  }
+
+  Future<WeatherModel> _fetchWeatherForLocation(
+    LocationModel location,
+    String cacheKey,
+  ) async {
+    try {
+      return await _weatherService.fetchWeather(
+        location.latitude,
+        location.longitude,
+      );
+    } on Exception {
+      _locationWeatherCache.remove(cacheKey);
+      rethrow;
+    }
+  }
 
   int? get peluangHujanSaatIni {
     final currentWeather = _weather;
