@@ -26,10 +26,10 @@ Screenshot belum tersedia di repository. Setelah mengambil screenshot aplikasi, 
 
 | Tampilan | Nama file yang disarankan |
 |---|---|
-| Home (Siang) | `screenshots/home_light.png` |
-| Home (Gelap) | `screenshots/home_dark.png` |
-| Lokasi (Siang) | `screenshots/loc_light.png` |
-| Lokasi (Gelap) | `screenshots/loc_dark.png` |
+| Home (Siang) | `screenshots/home_light.jpeg` |
+| Home (Gelap) | `screenshots/home_dark.jpeg` |
+| Lokasi (Siang) | `screenshots/loc_light.jpeg` |
+| Lokasi (Gelap) | `screenshots/loc_dark.jpeg` |
 
 ## Teknologi
 
