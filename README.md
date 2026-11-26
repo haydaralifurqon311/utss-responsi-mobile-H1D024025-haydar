@@ -21,15 +21,12 @@ Aplikasi cuaca berbahasa Indonesia yang mengambil data dari Open-Meteo. Proyek m
 > **GPS:** tombol lokasi saat ini masih menampilkan “Segera hadir”. Permission dan pengambilan lokasi GPS belum diterapkan.
 
 ## Screenshot
-
-Screenshot belum tersedia di repository. Setelah mengambil screenshot aplikasi, simpan gambar berikut di folder `screenshots/`, lalu ganti tabel ini dengan gambar aktual.
-
-| Tampilan | Nama file yang disarankan |
+| Tampilan | Nama file |
 |---|---|
-| Home (Siang) | `screenshots/home_light.jpeg` |
-| Home (Gelap) | `screenshots/home_dark.jpeg` |
-| Lokasi (Siang) | `screenshots/loc_light.jpeg` |
-| Lokasi (Gelap) | `screenshots/loc_dark.jpeg` |
+| Home (Siang) | ![Gambar Home Mode Terang](screenshots/home_light.jpeg) |
+| Home (Gelap) | ![Gambar Home Mode Gelap](screenshots/home_dark.jpeg) |
+| Lokasi (Siang) | ![Gambar Lokasi Mode Terang](screenshots/loc_light.jpeg) |
+| Lokasi (Gelap) | ![Gambar Lokasi Mode Gelap](screenshots/loc_dark.jpeg) |
 
 ## Teknologi
 
