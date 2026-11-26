@@ -2,9 +2,9 @@
 
 Aplikasi cuaca berbahasa Indonesia yang mengambil data dari Open-Meteo. Proyek menggunakan Flutter, Material 3, arsitektur MVVM, dan Provider.
 
-**Nama:** Shadow  
+**Nama:** Haydar Ali Furqon 
 **NIM:** H1D024025  
-**Program studi/universitas:** Unsoed
+**Program studi/universitas:** Informatika/Unsoed
 
 ## Fitur
 
@@ -17,8 +17,8 @@ Aplikasi cuaca berbahasa Indonesia yang mengambil data dari Open-Meteo. Proyek m
 - Kartu cuaca favorit mengambil data cuaca dari API Open-Meteo.
 - Tampilan loading, data kosong, dan error dengan aksi coba lagi pada layar cuaca/pencarian.
 - Navigasi bawah antara layar Cuaca dan Lokasi & Favorit.
+- GPS untuk menentukan secara cepat lokasi saat ini
 
-> **GPS:** tombol lokasi saat ini masih menampilkan “Segera hadir”. Permission dan pengambilan lokasi GPS belum diterapkan.
 
 ## Screenshot
 | Tampilan | Nama file |
