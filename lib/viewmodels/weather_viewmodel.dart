@@ -26,6 +26,53 @@ class WeatherViewModel extends ChangeNotifier {
   ViewState get state => _state;
   String? get errorMessage => _errorMessage;
 
+  String get waktuLokal {
+    final time = _weather?.current.time;
+    if (time == null) {
+      return '--:--';
+    }
+    final parsedTime = DateTime.tryParse(time);
+    if (parsedTime == null) {
+      return '--:--';
+    }
+    return '${parsedTime.hour.toString().padLeft(2, '0')}:'
+        '${parsedTime.minute.toString().padLeft(2, '0')}';
+  }
+
+  String get zonaWaktu {
+    switch (_weather?.timezone) {
+      case 'Asia/Jakarta':
+      case 'Asia/Pontianak':
+        return 'WIB';
+      case 'Asia/Makassar':
+        return 'WITA';
+      case 'Asia/Jayapura':
+        return 'WIT';
+      default:
+        return _weather?.timezoneAbbreviation ?? '';
+    }
+  }
+
+  String get kutipanWaktu {
+    final time = _weather?.current.time;
+    final parsedTime = time == null ? null : DateTime.tryParse(time);
+    if (parsedTime == null) {
+      return '';
+    }
+
+    final hour = parsedTime.hour;
+    if (hour >= 5 && hour < 10) {
+      return 'Pagi datang membawa kesempatan baru.';
+    }
+    if (hour >= 10 && hour < 15) {
+      return 'Siang terik, langkah tetap berarti.';
+    }
+    if (hour >= 15 && hour < 18) {
+      return 'Sore melambat, biarkan hari pulang pelan-pelan.';
+    }
+    return 'Malam menenangkan, besok kita mulai lagi.';
+  }
+
   Future<WeatherModel> fetchWeatherForLocation(LocationModel location) {
     final key = '${location.latitude},${location.longitude}';
     final cachedWeather = _locationWeatherCache[key];

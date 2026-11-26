@@ -2,16 +2,22 @@ import 'package:flutter/foundation.dart';
 
 import '../models/location_model.dart';
 import '../services/geocoding_service.dart';
+import '../services/gps_service.dart';
 import '../services/storage_service.dart';
 import 'view_state.dart';
 
 enum LocationFilter { semua, favorit }
 
 class LocationViewModel extends ChangeNotifier {
-  LocationViewModel(this._geocodingService, this._storageService);
+  LocationViewModel(
+    this._geocodingService,
+    this._storageService,
+    this._gpsService,
+  );
 
   final GeocodingService _geocodingService;
   final StorageService _storageService;
+  final GpsService _gpsService;
 
   String _query = '';
   List<LocationModel> _results = [];
@@ -20,6 +26,8 @@ class LocationViewModel extends ChangeNotifier {
   ViewState _state = ViewState.empty;
   String? _errorMessage;
   LocationFilter _filter = LocationFilter.semua;
+  bool _isLocating = false;
+  GpsServiceException? _gpsError;
 
   String get query => _query;
   List<LocationModel> get results => List.unmodifiable(_results);
@@ -28,6 +36,8 @@ class LocationViewModel extends ChangeNotifier {
   ViewState get state => _state;
   String? get errorMessage => _errorMessage;
   LocationFilter get filter => _filter;
+  bool get isLocating => _isLocating;
+  GpsServiceException? get gpsError => _gpsError;
 
   List<LocationModel> get visibleLocations {
     if (_filter == LocationFilter.semua) {
@@ -113,6 +123,41 @@ class LocationViewModel extends ChangeNotifier {
     await _storageService.saveSearchHistory([]);
     _history = [];
     notifyListeners();
+  }
+
+  Future<GpsServiceException?> useCurrentLocation({
+    required Future<void> Function(LocationModel) onLocationSelected,
+  }) async {
+    _isLocating = true;
+    _gpsError = null;
+    notifyListeners();
+
+    try {
+      final location = await _gpsService.getCurrentLocation();
+      await onLocationSelected(location);
+      return null;
+    } on GpsServiceException catch (error) {
+      _gpsError = error;
+      return error;
+    } on Exception {
+      const error = GpsServiceException(
+        GpsErrorType.unavailable,
+        'Lokasi perangkat tidak dapat diperoleh. Coba lagi.',
+      );
+      _gpsError = error;
+      return error;
+    } finally {
+      _isLocating = false;
+      notifyListeners();
+    }
+  }
+
+  Future<bool> openLocationSettings() {
+    return _gpsService.openLocationSettings();
+  }
+
+  Future<bool> openAppSettings() {
+    return _gpsService.openAppSettings();
   }
 
   void setFilter(LocationFilter filter) {

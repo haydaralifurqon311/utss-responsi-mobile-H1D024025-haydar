@@ -87,10 +87,25 @@ class ActivitySummaryCard extends StatelessWidget {
     final theme = Theme.of(context);
     final summary = activityIndex['Ringkasan'] ?? 'Data belum tersedia';
     final activities = [
-      ('Lari Sore', activityIndex['Lari sore'] ?? 'Data belum tersedia'),
-      ('Jemur', activityIndex['Jemur'] ?? 'Data belum tersedia'),
-      ('Berkendara', activityIndex['Berkendara'] ?? 'Data belum tersedia'),
+      (
+        Icons.directions_run,
+        'Lari Sore',
+        activityIndex['Lari sore'] ?? 'Data belum tersedia',
+      ),
+      (
+        Icons.wb_sunny_outlined,
+        'Jemur',
+        activityIndex['Jemur'] ?? 'Data belum tersedia',
+      ),
+      (
+        Icons.directions_car,
+        'Berkendara',
+        activityIndex['Berkendara'] ?? 'Data belum tersedia',
+      ),
     ];
+    final summaryIcon = summary == 'Waspada Hujan'
+        ? Icons.umbrella
+        : Icons.check_circle_outline;
 
     return Card(
       child: Padding(
@@ -100,7 +115,7 @@ class ActivitySummaryCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.lightbulb_outline, color: theme.colorScheme.primary),
+                Icon(summaryIcon, color: theme.colorScheme.primary),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(summary, style: theme.textTheme.titleMedium),
@@ -113,11 +128,13 @@ class ActivitySummaryCard extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 5),
                 child: Row(
                   children: [
-                    Expanded(child: Text(activity.$1)),
+                    Icon(activity.$1, color: theme.colorScheme.primary),
+                    const SizedBox(width: 8),
+                    Expanded(child: Text(activity.$2)),
                     const SizedBox(width: 12),
                     Flexible(
                       child: Text(
-                        activity.$2,
+                        activity.$3,
                         textAlign: TextAlign.end,
                         style: theme.textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,

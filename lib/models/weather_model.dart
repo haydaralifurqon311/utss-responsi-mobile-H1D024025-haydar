@@ -3,11 +3,15 @@ class WeatherModel {
     required this.current,
     required this.hourly,
     required this.daily,
+    required this.timezone,
+    required this.timezoneAbbreviation,
   });
 
   final CurrentWeather current;
   final List<HourlyWeather> hourly;
   final List<DailyWeather> daily;
+  final String timezone;
+  final String timezoneAbbreviation;
 
   factory WeatherModel.fromJson(Map<String, dynamic> json) {
     final currentData = _requiredMap(json, 'current');
@@ -49,6 +53,8 @@ class WeatherModel {
     ]);
 
     return WeatherModel(
+      timezone: _requiredString(json, 'timezone'),
+      timezoneAbbreviation: _requiredString(json, 'timezone_abbreviation'),
       current: CurrentWeather(
         temperature2m: _requiredDouble(currentData, 'temperature_2m'),
         relativeHumidity: _requiredInt(currentData, 'relative_humidity_2m'),

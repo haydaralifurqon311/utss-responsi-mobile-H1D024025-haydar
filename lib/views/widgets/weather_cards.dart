@@ -9,7 +9,8 @@ class WeatherMainCard extends StatelessWidget {
     required this.current,
     required this.today,
     required this.airQuality,
-    required this.isDark,
+    required this.timeLabel,
+    required this.timeQuote,
     required this.formatTemp,
     super.key,
   });
@@ -17,18 +18,13 @@ class WeatherMainCard extends StatelessWidget {
   final CurrentWeather current;
   final DailyWeather? today;
   final AirQualityModel? airQuality;
-  final bool isDark;
+  final String timeLabel;
+  final String timeQuote;
   final String Function(double) formatTemp;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final time = _formatTime(current.time);
-    final mode = isDark
-        ? 'MODE SENJA'
-        : current.isDay
-        ? 'MODE SIANG'
-        : 'MODE MALAM';
     final uvIndex = today?.uvIndexMax;
 
     return Card(
@@ -37,7 +33,16 @@ class WeatherMainCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('$mode · $time WIB', style: theme.textTheme.labelSmall),
+            Text('WAKTU · $timeLabel', style: theme.textTheme.labelSmall),
+            if (timeQuote.isNotEmpty) ...[
+              const SizedBox(height: 4),
+              Text(
+                timeQuote,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ],
             const SizedBox(height: 18),
             Row(
               children: [

@@ -115,7 +115,9 @@ class HomeScreen extends StatelessWidget {
           current: current,
           today: today,
           airQuality: weatherViewModel.airQuality,
-          isDark: settingsViewModel.isDark,
+          timeLabel:
+              '${weatherViewModel.waktuLokal} ${weatherViewModel.zonaWaktu}',
+          timeQuote: weatherViewModel.kutipanWaktu,
           formatTemp: settingsViewModel.formatTemp,
         ),
         const SizedBox(height: 10),

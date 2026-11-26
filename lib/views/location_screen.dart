@@ -8,6 +8,7 @@ import '../viewmodels/location_viewmodel.dart';
 import '../viewmodels/settings_viewmodel.dart';
 import '../viewmodels/view_state.dart';
 import '../viewmodels/weather_viewmodel.dart';
+import '../services/gps_service.dart';
 import 'main_shell.dart';
 
 class LocationScreen extends StatefulWidget {
@@ -72,14 +73,25 @@ class _LocationScreenState extends State<LocationScreen> {
                 const SizedBox(height: 10),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: OutlinedButton.icon(
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Segera hadir')),
-                      );
-                    },
-                    icon: const Icon(Icons.my_location),
-                    label: const Text('Gunakan Lokasi GPS Saat Ini'),
+                  child: OutlinedButton(
+                    onPressed: locationViewModel.isLocating
+                        ? null
+                        : _useCurrentLocation,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (locationViewModel.isLocating)
+                          const SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        else
+                          const Icon(Icons.my_location),
+                        const SizedBox(width: 8),
+                        const Text('Gunakan Lokasi GPS Saat Ini'),
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -315,6 +327,37 @@ class _LocationScreenState extends State<LocationScreen> {
     final selection = weatherViewModel.selectLocation(location);
     tabController.selectTab(0);
     await selection;
+  }
+
+  Future<void> _useCurrentLocation() async {
+    final locationViewModel = context.read<LocationViewModel>();
+    final error = await locationViewModel.useCurrentLocation(
+      onLocationSelected: _selectLocation,
+    );
+    if (!mounted || error == null) {
+      return;
+    }
+
+    SnackBarAction? action;
+    if (error.type == GpsErrorType.locationServiceDisabled) {
+      action = SnackBarAction(
+        label: 'Buka Pengaturan',
+        onPressed: () async {
+          await locationViewModel.openLocationSettings();
+        },
+      );
+    } else if (error.type == GpsErrorType.permissionDeniedForever) {
+      action = SnackBarAction(
+        label: 'Buka Pengaturan',
+        onPressed: () async {
+          await locationViewModel.openAppSettings();
+        },
+      );
+    }
+
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text(error.message), action: action));
   }
 }
 

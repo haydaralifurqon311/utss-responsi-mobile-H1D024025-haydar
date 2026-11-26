@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'core/theme/app_theme.dart';
 import 'services/geocoding_service.dart';
+import 'services/gps_service.dart';
 import 'services/storage_service.dart';
 import 'services/weather_service.dart';
 import 'viewmodels/location_viewmodel.dart';
@@ -16,6 +17,7 @@ Future<void> main() async {
   final storageService = StorageService();
   final weatherService = WeatherService();
   final geocodingService = GeocodingService();
+  final gpsService = GpsService();
   final settingsViewModel = SettingsViewModel(storageService);
   await settingsViewModel.load();
 
@@ -31,7 +33,8 @@ Future<void> main() async {
         ),
         ChangeNotifierProvider(
           create: (_) =>
-              LocationViewModel(geocodingService, storageService)..init(),
+              LocationViewModel(geocodingService, storageService, gpsService)
+                ..init(),
         ),
       ],
       child: const MyApp(),
@@ -46,6 +49,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final settings = context.watch<SettingsViewModel>();
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Kataware-doki',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
